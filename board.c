@@ -8,7 +8,6 @@
 #include "cse30life.h"
 #include "board.h"
 
-
 /**
  *
  * - malloc a boards structure
@@ -44,8 +43,9 @@ boards_t * createBoard(char *initFileName){
 	int columns; // Will hold # of columns of the board
 
 	// Read num of rows and columns from file and assign them to local variables rows and columns
-	fscanf(fp, "%d", rows);
-	fscanf(fp, "%d", columns);
+	fscanf(fp, "%d", &rows);
+
+	fscanf(fp, "%d", &columns);
 	
 	// Assign row nums and col nums to board structure
 	newBoard->numRows = rows;
@@ -68,7 +68,8 @@ boards_t * createBoard(char *initFileName){
 	int xCoord;
 	
 	// Initialize the appropriate cells in currentBuffer to be alive
-	while(fscanf(fp, "%d %d", yCoord, xCoord) > 0){ 
+	while(fscanf(fp, "%d %d", &yCoord, &xCoord) > 0){ 
+	
 		
 		// if-else block to make sure coordinates are within appropriate range
 		// before initializing cells
@@ -84,13 +85,13 @@ boards_t * createBoard(char *initFileName){
 	// Zero out top and bottom border cells
 	for(int i=0; i<columns; i++) {
 		newBoard->currentBuffer[i] = 0;
-		newBoard->currentBuffer[(rows-1)*columns+i];
+		newBoard->currentBuffer[(rows-1)*columns+i] = 0;
 	}
 	
 	// Zero out left and right border cells
 	for(int j=1; j<(rows-1); j++) {
-		newBoard->currentBuffer[j*columns];
-		newBoard->currentBuffer[j*columns+(columns-1)];
+		newBoard->currentBuffer[j*columns] = 0;
+		newBoard->currentBuffer[j*columns+(columns-1)] = 0;
 	}	
 
 	fclose(fp); // close filestream
